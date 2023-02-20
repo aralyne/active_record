@@ -1,0 +1,69 @@
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(7711934028023376060)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to AddBalanceCentsToUsers (20230220134445)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[35mALTER TABLE "users" ADD "balance_cents" integer[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230220134445"]]
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCompanies (20230220134556)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE TABLE "companies" ("id" bigserial primary key, "name" character varying, "balance_cents" integer, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230220134556"]]
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateTransfers (20230220134734)
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.2ms)[0m  [1m[35mCREATE TABLE "transfers" ("id" bigserial primary key, "balance_cents" integer, "user_id" bigint NOT NULL, "company_id" bigint NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, CONSTRAINT "fk_rails_344b52b7fd"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+, CONSTRAINT "fk_rails_95f2513d06"
+FOREIGN KEY ("company_id")
+  REFERENCES "companies" ("id")
+)[0m
+  [1m[35m (2.2ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_user_id" ON "transfers" ("user_id")[0m
+  [1m[35m (3.0ms)[0m  [1m[35mCREATE INDEX "index_transfers_on_company_id" ON "transfers" ("company_id")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20230220134734"]]
+  [1m[36mTRANSACTION (1.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(7711934028023376060)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mCompany Create (1.0ms)[0m  [1m[32mINSERT INTO "companies" ("name", "balance_cents", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "banco"], ["balance_cents", 500], ["created_at", "2023-02-20 14:12:45.682738"], ["updated_at", "2023-02-20 14:12:45.682738"]]
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.8ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:17:58.891336"], ["balance_cents", 1], ["id", 1]]
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.6ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:19:30.621409"], ["balance_cents", 2], ["id", 1]]
+  [1m[36mTRANSACTION (2.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:31:27.645058"], ["balance_cents", 102], ["id", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:32:28.784742"], ["balance_cents", 102], ["id", 1]]
+  [1m[36mCompany Update (0.2ms)[0m  [1m[33mUPDATE "companies" SET "balance_cents" = $1, "updated_at" = $2 WHERE "companies"."id" = $3[0m  [["balance_cents", 2], ["updated_at", "2023-02-20 14:32:28.786313"], ["id", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.2ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.3ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:32:49.935015"], ["balance_cents", 102], ["id", 1]]
+  [1m[36mCompany Update (0.2ms)[0m  [1m[33mUPDATE "companies" SET "balance_cents" = $1, "updated_at" = $2 WHERE "companies"."id" = $3[0m  [["balance_cents", 2], ["updated_at", "2023-02-20 14:32:49.936469"], ["id", 1]]
+  [1m[36mTransfer Create (0.6ms)[0m  [1m[32mINSERT INTO "transfers" ("balance_cents", "user_id", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["balance_cents", 100], ["user_id", 1], ["company_id", 1], ["created_at", "2023-02-20 14:32:49.949987"], ["updated_at", "2023-02-20 14:32:49.949987"]]
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTransfer Load (0.5ms)[0m  [1m[34mSELECT "transfers".* FROM "transfers" ORDER BY "transfers"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.5ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTransfer Load (0.6ms)[0m  [1m[34mSELECT "transfers".* FROM "transfers" ORDER BY "transfers"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.4ms)[0m  [1m[34mSELECT "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Update (0.5ms)[0m  [1m[33mUPDATE "users" SET "updated_at" = $1, "balance_cents" = $2 WHERE "users"."id" = $3[0m  [["updated_at", "2023-02-20 14:35:32.325366"], ["balance_cents", 202], ["id", 1]]
+  [1m[36mCompany Update (0.1ms)[0m  [1m[33mUPDATE "companies" SET "balance_cents" = $1, "updated_at" = $2 WHERE "companies"."id" = $3[0m  [["balance_cents", 102], ["updated_at", "2023-02-20 14:35:32.327781"], ["id", 1]]
+  [1m[36mTransfer Create (0.2ms)[0m  [1m[32mINSERT INTO "transfers" ("balance_cents", "user_id", "company_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["balance_cents", 100], ["user_id", 1], ["company_id", 1], ["created_at", "2023-02-20 14:35:32.328780"], ["updated_at", "2023-02-20 14:35:32.328780"]]
+  [1m[36mTRANSACTION (2.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTransfer Load (0.6ms)[0m  [1m[34mSELECT "transfers".* FROM "transfers" ORDER BY "transfers"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
